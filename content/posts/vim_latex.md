@@ -24,7 +24,7 @@ The first thing I did was grab integration with coc.nvim. This entailed installi
         "command": "java",
         "args": [
                 "-jar",
-                "/home/dieraca/.languageservers/texlab/build/libs/texlab.jar"
+                "$PATHTOCOMPILERTEXLAB/texlab.jar"
         ],
         // not start server at home directory, since it won't work.
         "ignoredRootPaths": [
