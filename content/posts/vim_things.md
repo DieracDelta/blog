@@ -139,28 +139,31 @@ To install, just like any other completion engine, you'll throw the github repo 
 - Google around for a language server to integrate in, *install this language server separately*, and edit to tell coc.nvim about the language server in its own *separate* config file.
 - Google around for coc.nvim support, and `:CocInstall` the relevant plugin.
 
-I'll use C as the example here. First, choose a language server. I like using [ccls](https://github.com/MaskRay/ccls.git), and that's what I'll use in this example. You could also use [clangd](https://clang.llvm.org/extra/clangd/Installation.html) if you're dealing with clang, or any of the other c Language servers. Once you've successfully compiled it, tell coc.nvim about it by including as an [entry](https://github.com/MaskRay/ccls/wiki/coc.nvim) in your con fig file (accessible via `:CocConfig`):
+I'll use C as the example here. First, choose a language server. I like using clangd, and that's what I'll use in this example. Clangd is part of the llvm project and most modern distros have a package that includes it. Note that there are other options such as ccls. Once you've successfully installed (or compiled) clangd, tell coc.nvim about it by including as an [entry](https://github.com/neoclide/coc.nvim/wiki/Language-servers) in your coc config file (accessible via `:CocConfig`):
 
 ```
   "languageserver": {
-    "ccls": {
-      "command": "ccls",
-      "filetypes": ["c", "cpp", "cuda", "objc", "objcpp"],
-      "rootPatterns": [".ccls", "compile_commands.json", ".vim/", ".git/", ".hg/"],
-      "initializationOptions": {
-         "cache": {
-           "directory": ".ccls-cache"
-         }
-       }
-    }
+        "clangd": {
+              "command": "clangd",
+              "args": ["--background-index"],
+              "rootPatterns": ["compile_flags.txt", "compile_commands.json", ".vim/", ".git/", ".hg/"],
+              "filetypes": ["c", "cpp", "objc", "objcpp"]
+            }
   }
 ```
 
-Note that in the root directory of your project you'll need to write a .ccls file. I'll cover how to do this with C in another blog post. Other language servers of interest (that you can look at my dots to get a sense for):
+Note that in the root directory of your project you'll need to write a compile_commands.txt file for clangd to use. This is easy enough to do directly if your c project uses cmake (you can output directly during compilation). Otherwise, if you're using some other build tool (like make), you can use [bear](https://github.com/rizsotto/Bear) to generate this file. You feed bear the command to build the project and bear will both build the project once and autogenerate the compile_commands.txt file. E.g. Something incredibly simple like:
+```
+bear make 
+```
+
+To give you a sense of how powerful this is, I've both used it on my own personal projects (smaller), and absolutely massive projects like qemu. Works like a charm in both cases, surprisingly.
+
+Other language servers of interest (that you can look at my dots to get a sense for):
 
 - python: you'll need to install the language server and jedi things for coc. Google around for that. Should be easy and just copy my config. Fantastic support, though. Makes editing things easy.
 - docker: decent support for config files. Again, use google.
-- rust: phenomenal support and linting via rls! Coc even installs it for you!
+- rust: phenomenal support and linting via rls! Coc even installs the language server for you using rustup!
 - markdown: good support and linting with efm
 - Java: use the [eclipse language server](https://github.com/eclipse/eclipse.jdt.ls)! It's great! Eclipse level autocomplete/intellisense but in vim! There are a few args you have to pass in (see my config file), and obviously you the .jar to be on your path somewhere.
 - latex: it's great, but the source of another blog post
