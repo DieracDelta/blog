@@ -16,11 +16,13 @@ aliases:
 
 ## What is vim and why should I use it? ##
 
+EDIT: my messy dots are [HERE](https://gitea.justinrestivo.me/jrestivo/neovim_dots/src/branch/master/init.vim)
+
 I've had people approach me and ask how to get started with vim. Based on my struggles with it, I've decided to write a guide describing my workflow. I ran through vimtutor four years ago, switched to and used spacemacs for about two years, then within the past year switched back to (neo)vim.
 
-First of all, I've gone with neovim. Neovim is basically vim but with nice async apis that you can play around with in languages other than vimscript (which is gross), like python or golang. From a user standpoint, you observe any visible differences.
+First of all, I've gone with neovim. Neovim is basically vim but with nice async apis that you can play around with in languages other than vimscript (which is gross), like python or golang. From a user standpoint, you shouldn't observe any visible differences. (EDIT: compiling head of neovim brings in a nice hover feature worth using)
 
-Now, let's get started. What is vim and why use it? Vim is a modal editor, meaning that it supports different modes one may switch between. It makes for speedier text manipulation than the more traditional editor (e.g. microsoft word) in multiple ways. This part isn't as interesting to me, so I won't spend anymore time on this. Go run through vimtutor then come back. I'll write the rest of this assuming you're convinced that vim is a useful tool and want to use it for writing code. I'll talk about ways I've optimized my workflow through vim. Mostly this is an aggregation of stack overflow posts and other blog posts.
+Now, let's get started. What is vim and why use it? Vim is a modal editor, meaning that it supports different modes one may switch between. It makes for speedier text manipulation than the more traditional editor (e.g. microsoft word) in multiple ways. This part isn't as interesting to me, so I won't spend anymore time on it. Go run through vimtutor then come back. I'll write the rest of this assuming you're convinced that vim is a useful tool and want to use it for writing code. I'll talk about ways I've optimized my workflow through vim. Mostly this is an aggregation of stack overflow posts and other blog posts.
 
 ## Writing a config file for vim ##
 
@@ -69,7 +71,7 @@ map <leader>bp :bp<cr> " previous buffer
 
 ## Getting started with vim plugin manager ##
 
-The next thing to do is get a plugin manager. Vim has plugins--bits of vimscript that provide a *lot* of additional functionality. There are a lot of plugin managers out there. Isaac recommends [vim-plug](https://github.com/junegunn/vim-plug), and I've had only good experiences with it. It's incredibly simple to set up and use, but I haven't tried others because this one works so well. That being said, vim8 includes its own built-in plugin manager so if you're using vim, you may want to try that out. To install, follow the instructions in the README, which is just a curl command in most cases. To use, introduce a section into your config that looks like (again the README's example is great and I'm just re-explaining...):
+The next thing to do is get a plugin manager. Vim has plugins--bits of vimscript that provide a *lot* of additional functionality. There are a lot of plugin managers out there. Isaac recommends [vim-plug](https://github.com/junegunn/vim-plug), and I've had only good experiences with it. It's incredibly simple to set up and use, but I haven't tried others because this one works so well. That being said, vim8 includes its own built-in plugin manager so if you're using vim, you may want to try that out. To install plug, follow the instructions in the README, which is just a curl command in most cases. To use, introduce a section into your config that looks like (again the README's example is great and I'm just re-explaining...):
 ```
 call plug#begin('~/.vim/plugged')
 Plug 'github_username/repo_name'
@@ -82,11 +84,11 @@ Where you replace `github_username` with a github username and `repo_name` with 
 
 ## Project Management ##
 
-The first ones I want to discuss are related to project management. When you open a project directory, it's often really annoying to do three things. I'll go through them one by one:
+The first plugins I want to discuss are related to project management. When you open a project directory, it's often really annoying to do three things. I'll go through them one by one:
 
-### FZF ###
+### Project Management ###
 
-It's really annoying to reopen files every time you want to open vim to edit a project (I'm using project to mean a directory). Luckily, Isaac ran into and fixed this problem. He wrote his own [plugin](https://github.com/isaacmorneau/vim-simple-sessions) in vimscript (what a savage) that I strongly recommend you try. In essence, it comes in two parts:
+It's really annoying to reopen files every time you want to open vim to edit a project (I'm using project to mean a directory). Luckily, my friend Isaac ran into and fixed this problem. He wrote his own [plugin](https://github.com/isaacmorneau/vim-simple-sessions) in vimscript that I strongly recommend you try. In essence, it comes in two parts:
 
 - a bash script to choose between pre-existing sessions.
 - some execute mode commands to control how sessions work
@@ -130,7 +132,7 @@ And finally, the kicker is grepping the currently open directory. Do this by cal
 
 ## Codenav + intellisense ##
 
-This is a topic near and dear to my heart. Very important for both exploring huge codebases, and double checking that what you're doing is right syntactically. The neat thing is that you can get exactly equivalent to VSCode intellisense and code nav. And nearly equivalent to Jetbrains IDEs, in my experience. The way that VScode does things (and vim/emacs, now) is via this [language server protocol](https://microsoft.github.io/language-server-protocol/). You'll have a *language server* running in the background, and vim will query it for information that it will then relay to you. Most language servers support async APIs, so you won't experience any latency, even for massive projects. The autocomplete/intellisense engine to use here is [coc.nvim](https://github.com/neoclide/coc.nvim), which does in fact both work with vim and neovim. There are alternatives which I did try, but this is the best on the market as of writing this post.
+Codenav is important for both exploring huge codebases, and double checking that what you're doing is right syntactically. This is typically the perk of using an IDE. But, you can now get VSCode's intellisense and code nav in vim. This is nearly equivalent to Jetbrains IDEs, in my experience. The way that VScode does things (and vim/emacs, now) is via this [language server protocol](https://microsoft.github.io/language-server-protocol/). You'll have a *language server* running in the background, and vim will query it for information that it will then relay to you. Most language servers support async APIs, so you won't experience any latency, even for massive projects. The autocomplete/intellisense engine to use here is [coc.nvim](https://github.com/neoclide/coc.nvim), which does in fact both work with vim and neovim. There are alternatives which I did try, but this is the best on the market as of writing this post.
 
 ### Coc.nvim ###
 
