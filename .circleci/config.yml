@@ -1,0 +1,35 @@
+version: 2
+
+jobs:
+  build:
+    branches:
+      only:
+        - master
+      docker:
+        - image: lnl7/nix:2020-03-07
+      steps:
+        - run:
+          name: Install dependencies
+          command: |
+            nix-channel --update
+            nix-env -u
+            nix-env -iA \
+              nixpkgs.gitMinimal \
+              nixpkgs.nodejs-10_x \
+              nixpkgs.openssh \
+              nixpkgs.yarn \
+              nixpkgs.gnutar \
+              nixpkgs.curl \
+              nixpkgs.findutils \
+              nixpkgs.glibc \
+              nixpkgs.gnugrep \
+              nixpkgs.gnused \
+              nixpkgs.gzip
+        - run:
+          name: Build
+          command: |
+            nix-shell --pure --run "hugo"
+        - run:
+          name: Deploy
+          command: |
+            nix-shell -A shell --pure ./ci-shell.nix --run "npx netlify deploy --dir=public --message=\"$CIRCLE_SHA1\" --prod"
