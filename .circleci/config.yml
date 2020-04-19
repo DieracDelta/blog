@@ -5,10 +5,10 @@ jobs:
     branches:
       only:
         - master
-      docker:
-        - image: lnl7/nix:2020-03-07
-      steps:
-        - run:
+    docker:
+      - image: lnl7/nix:2020-03-07
+    steps:
+      - run:
           name: Install dependencies
           command: |
             nix-channel --update
@@ -24,12 +24,15 @@ jobs:
               nixpkgs.glibc \
               nixpkgs.gnugrep \
               nixpkgs.gnused \
-              nixpkgs.gzip
-        - run:
+              nixpkgs.gzip \
+              nixpkgs.hugo \
+              nixpkgs.nodePackages.node2nix
+      - checkout
+      - run:
           name: Build
           command: |
-            nix-shell --pure --run "hugo"
-        - run:
+            nix-shell hugo_dep.nix --run "hugo"
+      - run:
           name: Deploy
           command: |
-            nix-shell -A shell --pure ./ci-shell.nix --run "npx netlify deploy --dir=public --message=\"$CIRCLE_SHA1\" --prod"
+            nix-shell -A shell --pure --run "npx netlify deploy --dir=public --message=\"$CIRCLE_SHA1\" --prod"

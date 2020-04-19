@@ -1,0 +1,24 @@
+{
+  "name": "blog",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DieracDelta/blog.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DieracDelta/blog/issues"
+  },
+  "homepage": "https://github.com/DieracDelta/blog#readme",
+  "dependencies": {
+    "netlify": "^4.0.5",
+    "netlify-cli": "^2.47.0",
+    "npx": "^10.2.2"
+  }
+}
